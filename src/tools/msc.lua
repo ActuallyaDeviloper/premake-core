@@ -93,6 +93,14 @@
 			On = "/Gy",
 			Off = "/Gy-",
 		},
+		linksectiondata = {
+			On = "/Gw",
+			Off = "/Gw-",
+		},
+		linksectionfunction = {
+			On = "/Gy",
+			Off = "/Gy-",
+		},
 		callingconvention = {
 			Cdecl = "/Gd",
 			FastCall = "/Gr",
@@ -387,6 +395,15 @@
 	msc.linkerFlags = {
 		linkerfatalwarnings = {
 			All = "/WX",
+		},
+		deadcodestripping = {
+			On = "/OPT:REF",
+			Off = "/OPT:NOREF",
+		},
+		identicalcodefolding = {
+			Off = "/OPT:NOICF",
+			All = "/OPT:ICF",
+			Safe = "/OPT:NOICF", -- "link.exe" has no safe mode, so "Safe" must not fold at all.
 		},
 		manifest = {
 			Off = "/MANIFEST:NO",

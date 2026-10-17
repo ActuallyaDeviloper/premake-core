@@ -2193,6 +2193,10 @@
 			opts = table.join(opts, table.translate(cfg.enablewarnings, function(enable) return '-W' .. enable end))
 		end
 
+		if cfg.system ~= p.LINUX then
+			opts = table.join(opts, p.tools.msc.shared.linksectiondata[cfg.linksectiondata]) -- MSBuild has no property for "/Gw".
+		end
+
 		if #opts > 0 then
 			opts = table.concat(opts, " ")
 			m.element("AdditionalOptions", condition, '%s %%(AdditionalOptions)', opts)
@@ -2650,6 +2654,8 @@
 			else
 				m.element("FunctionLevelLinking", nil, "false")
 			end
+		elseif cfg.linksectionfunction then
+			m.element("FunctionLevelLinking", nil, tostring(cfg.linksectionfunction == p.ON))
 		elseif config.isOptimizedBuild(cfg) then
 			m.element("FunctionLevelLinking", nil, "true")
 		end
@@ -3156,12 +3162,15 @@
 
 
 	function m.optimizeReferences(cfg)
-		if config.isOptimizedBuild(cfg) then
-			if cfg.dynamicdebugging == p.ON then
-				m.element("EnableCOMDATFolding", nil, "false")
-			else
-				m.element("EnableCOMDATFolding", nil, "true")
-			end
+		local optimized = config.isOptimizedBuild(cfg)
+		if cfg.identicalcodefolding and cfg.identicalcodefolding ~= "Default" then
+			m.element("EnableCOMDATFolding", nil, tostring(cfg.identicalcodefolding == "All"))
+		elseif optimized then
+			m.element("EnableCOMDATFolding", nil, tostring(cfg.dynamicdebugging ~= p.ON))
+		end
+		if cfg.deadcodestripping and cfg.deadcodestripping ~= "Default" then
+			m.element("OptimizeReferences", nil, tostring(cfg.deadcodestripping == p.ON))
+		elseif optimized then
 			m.element("OptimizeReferences", nil, "true")
 		end
 	end

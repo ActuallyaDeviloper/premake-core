@@ -553,6 +553,26 @@
 	}
 
 	api.register {
+		name = "linksectiondata",
+		scope = "config",
+		kind = "string",
+		allowed = {
+			"On",
+			"Off",
+		}
+	}
+
+	api.register {
+		name = "linksectionfunction",
+		scope = "config",
+		kind = "string",
+		allowed = {
+			"On",
+			"Off",
+		}
+	}
+
+	api.register {
 		name = "linkgroups",
 		scope = "config",
 		kind = "string",
@@ -1221,6 +1241,29 @@
 			"Default",
 			"On",
 			"Off"
+		}
+	}
+
+	api.register {
+		name = "deadcodestripping",
+		scope = "config",
+		kind = "string",
+		allowed = {
+			"Default",
+			"On",
+			"Off",
+		}
+	}
+
+	api.register {
+		name = "identicalcodefolding",
+		scope = "config",
+		kind = "string",
+		allowed = {
+			"Default",
+			"Off",
+			"All",
+			"Safe",
 		}
 	}
 

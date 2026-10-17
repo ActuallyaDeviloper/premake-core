@@ -12,7 +12,7 @@ Incremental linking can improve iteration times during development by only relin
 
 | Value   | Description                                                  |
 |---------|--------------------------------------------------------------|
-| Default | Use the default incremental linking behavior. Incremental linking is enabled for debug builds and disabled for optimized builds, static libraries, and when link-time optimization is enabled. |
+| Default | Use the default incremental linking behavior. Incremental linking is enabled for debug builds and disabled for optimized builds, static libraries, link-time optimization, [identicalcodefolding](identicalcodefolding.md) `All` and [deadcodestripping](deadcodestripping.md) `On`. |
 | On      | Force incremental linking to be enabled.                     |
 | Off     | Force incremental linking to be disabled.                    |
 

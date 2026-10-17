@@ -645,6 +645,36 @@
 
 
 --
+-- Check the identicalcodefolding and deadcodestripping APIs.
+--
+
+	function suite.identicalCodeFoldingAll_deadCodeStrippingOff()
+		identicalcodefolding "All"
+		deadcodestripping "Off"
+		prepare()
+		test.capture [[
+<Link>
+	<SubSystem>Windows</SubSystem>
+	<EnableCOMDATFolding>true</EnableCOMDATFolding>
+	<OptimizeReferences>false</OptimizeReferences>
+		]]
+	end
+
+	function suite.identicalCodeFoldingSafe_deadCodeStrippingOn_optimized_doesNotFold()
+		identicalcodefolding "Safe"
+		deadcodestripping "On"
+		optimize "On"
+		prepare()
+		test.capture [[
+<Link>
+	<SubSystem>Windows</SubSystem>
+	<EnableCOMDATFolding>false</EnableCOMDATFolding>
+	<OptimizeReferences>true</OptimizeReferences>
+		]]
+	end
+
+
+--
 -- Test if LinkTimeOptimization API correctly specifies LinkTimeCodeGeneration
 --
 

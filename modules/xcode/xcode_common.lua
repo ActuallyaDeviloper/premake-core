@@ -1569,6 +1569,10 @@
 
 		settings['ONLY_ACTIVE_ARCH'] = iif(p.config.isDebugBuild(cfg), 'YES', 'NO')
 
+		if cfg.deadcodestripping == p.ON or cfg.deadcodestripping == p.OFF then
+			settings['DEAD_CODE_STRIPPING'] = iif(cfg.deadcodestripping == p.ON, 'YES', 'NO')
+		end
+
 		-- build list of "other" C/C++ flags
 		local checks = {
 			["-ffast-math"]             = cfg.floatingpoint == "Fast" or cfg.optimize == "Full",
@@ -1613,6 +1617,10 @@
 					table.insert(flags, "-l" .. xcode.escapeArg(lib.linktarget.basename))
 				end
 			end
+		end
+
+		if cfg.identicalcodefolding == "Off" then
+			table.insert(flags, "-Wl,-no_deduplicate") -- Xcode always links with Apple "ld64".
 		end
 
 		settings['OTHER_LDFLAGS'] = table.join(flags, cfg.linkoptions, toolset.wholearchive(cfg))

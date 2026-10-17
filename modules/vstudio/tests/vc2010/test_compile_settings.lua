@@ -1134,6 +1134,37 @@
 	end
 
 
+--
+-- Check handling of the linksectionfunction and linksectiondata APIs.
+--
+
+	function suite.onLinkSectionFunctionOff_optimized()
+		linksectionfunction "Off"
+		optimize "On"
+		prepare()
+		test.capture [[
+<ClCompile>
+	<PrecompiledHeader>NotUsing</PrecompiledHeader>
+	<WarningLevel>Level3</WarningLevel>
+	<Optimization>Full</Optimization>
+	<FunctionLevelLinking>false</FunctionLevelLinking>
+		]]
+	end
+
+	function suite.onLinkSectionDataOn()
+		linksectiondata "On"
+		buildoptions { "/xyz" }
+		prepare()
+		test.capture [[
+<ClCompile>
+	<PrecompiledHeader>NotUsing</PrecompiledHeader>
+	<WarningLevel>Level3</WarningLevel>
+	<Optimization>Disabled</Optimization>
+	<AdditionalOptions>/xyz /Gw %(AdditionalOptions)</AdditionalOptions>
+		]]
+	end
+
+
 
 --
 -- Check handling of the intrinsics api

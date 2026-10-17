@@ -56,6 +56,13 @@
 			Strict = "-ffp-model=strict",
 			Precise = "-ffp-model=precise"
 		},
+		identicalcodefolding = function(cfg)
+			if cfg.linker == "LLD" then
+				return { Safe = "-faddrsig" } -- Safe folding needs the address-significance table, which Clang omits for Mach-O by default.
+			end
+		end,
+		linksectiondata = gcc.shared.linksectiondata,
+		linksectionfunction = gcc.shared.linksectionfunction,
 		strictaliasing = gcc.shared.strictaliasing,
 		openmp = gcc.shared.openmp,
 		optimize = gcc.shared.optimize,
@@ -329,6 +336,22 @@
 			end,
 		},
 		linker = gcc.ldflags.linker,
+		deadcodestripping = function(cfg)
+			if cfg.system == p.WINDOWS then
+				return { On = "-Xlinker /OPT:REF", Off = "-Xlinker /OPT:NOREF" }
+			end
+			return gcc.ldflags.deadcodestripping(cfg)
+		end,
+		identicalcodefolding = function(cfg)
+			if cfg.system == p.WINDOWS then
+				return {
+					Off = "-Xlinker /OPT:NOICF",
+					All = "-Xlinker /OPT:ICF",
+					Safe = iif(cfg.linker == "LLD", "-Xlinker /OPT:SAFEICF", "-Xlinker /OPT:NOICF") -- "link.exe" has no safe mode, so "Safe" must not fold at all.
+				}
+			end
+			return gcc.ldflags.identicalcodefolding(cfg)
+		end,
 		mapfile = gcc.ldflags.mapfile,
 		profile = gcc.ldflags.profile,
 		openmp = gcc.ldflags.openmp,

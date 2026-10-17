@@ -161,7 +161,9 @@
 				or config.isOptimizedBuild(cfg)
 				or cfg.incrementallink == p.OFF
 				or cfg.linktimeoptimization == p.ON
-				or cfg.linktimeoptimization == "Fast" then
+				or cfg.linktimeoptimization == "Fast"
+				or cfg.identicalcodefolding == "All"
+				or cfg.deadcodestripping == p.ON then
 			return false
 		end
 		return true

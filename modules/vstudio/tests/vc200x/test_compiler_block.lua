@@ -46,6 +46,23 @@
 		]]
 	end
 
+	function suite.looksGood_onLinkSectionFunctionOff()
+		linksectionfunction "Off"
+		prepare()
+		test.capture [[
+<Tool
+	Name="VCCLCompilerTool"
+	Optimization="0"
+	BasicRuntimeChecks="3"
+	RuntimeLibrary="2"
+	EnableFunctionLevelLinking="false"
+	UsePrecompiledHeader="0"
+	WarningLevel="3"
+	DebugInformationFormat="0"
+/>
+		]]
+	end
+
 
 --
 -- If include directories are specified, the <AdditionalIncludeDirectories> should be added.

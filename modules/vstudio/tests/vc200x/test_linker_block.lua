@@ -176,6 +176,47 @@
 
 
 --
+-- Verify handling of identicalcodefolding and deadcodestripping APIs.
+--
+
+	function suite.onIdenticalCodeFoldingAll_deadCodeStrippingOff()
+		identicalcodefolding "All"
+		deadcodestripping "Off"
+		prepare()
+		test.capture [[
+<Tool
+	Name="VCLinkerTool"
+	OutputFile="$(OutDir)\MyProject.exe"
+	LinkIncremental="1"
+	GenerateDebugInformation="false"
+	SubSystem="1"
+	OptimizeReferences="1"
+	EnableCOMDATFolding="2"
+	TargetMachine="1"
+/>
+		]]
+	end
+
+	function suite.onIdenticalCodeFoldingSafe_deadCodeStrippingOn_doesNotFold()
+		identicalcodefolding "Safe"
+		deadcodestripping "On"
+		prepare()
+		test.capture [[
+<Tool
+	Name="VCLinkerTool"
+	OutputFile="$(OutDir)\MyProject.exe"
+	LinkIncremental="1"
+	GenerateDebugInformation="false"
+	SubSystem="1"
+	OptimizeReferences="2"
+	EnableCOMDATFolding="1"
+	TargetMachine="1"
+/>
+		]]
+	end
+
+
+--
 -- Verify that link options are specified.
 --
 

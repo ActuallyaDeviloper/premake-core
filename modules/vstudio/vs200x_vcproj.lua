@@ -1025,7 +1025,12 @@
 
 
 	function m.enableCOMDATFolding(cfg, toolset)
-		if config.isOptimizedBuild(cfg) and not toolset then
+		if toolset then
+			return
+		end
+		if cfg.identicalcodefolding and cfg.identicalcodefolding ~= "Default" then
+			p.w('EnableCOMDATFolding="%d"', iif(cfg.identicalcodefolding == "All", 2, 1))
+		elseif config.isOptimizedBuild(cfg) then
 			p.w('EnableCOMDATFolding="2"')
 		end
 	end
@@ -1053,7 +1058,7 @@
 	function m.enableFunctionLevelLinking(cfg)
 		local cfg, filecfg = config.normalize(cfg)
 		if not filecfg then
-			p.w('EnableFunctionLevelLinking="true"')
+			p.w('EnableFunctionLevelLinking="%s"', tostring(cfg.linksectionfunction ~= p.OFF))
 		end
 	end
 
@@ -1290,7 +1295,12 @@
 
 
 	function m.optimizeReferences(cfg, toolset)
-		if config.isOptimizedBuild(cfg) and not toolset then
+		if toolset then
+			return
+		end
+		if cfg.deadcodestripping and cfg.deadcodestripping ~= "Default" then
+			p.w('OptimizeReferences="%d"', iif(cfg.deadcodestripping == p.ON, 2, 1))
+		elseif config.isOptimizedBuild(cfg) then
 			p.w('OptimizeReferences="2"')
 		end
 	end

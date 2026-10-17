@@ -87,6 +87,19 @@
 			On = "-flto=auto",
 			Fast = "-flto=auto",
 		},
+		identicalcodefolding = {
+			Off = "-fno-ipa-icf",
+			All = "-fipa-icf",
+			Safe = "-fipa-icf", -- GCC keeps function addresses distinct by folding into thunks or aliases.
+		},
+		linksectiondata = {
+			On = "-fdata-sections",
+			Off = "-fno-data-sections",
+		},
+		linksectionfunction = {
+			On = "-ffunction-sections",
+			Off = "-fno-function-sections",
+		},
 		strictaliasing = {
 			Off = "-fno-strict-aliasing",
 			Level1 = { "-fstrict-aliasing", "-Wstrict-aliasing=1" },
@@ -624,6 +637,19 @@
 			Default = "",
 			LLD = "-fuse-ld=lld"
 		},
+		deadcodestripping = function(cfg)
+			if table.contains(os.getSystemTags(cfg.system), "darwin") then
+				return { On = "-Wl,-dead_strip" } -- Apple "ld64" only strips with "-dead_strip".
+			end
+			return { On = "-Wl,--gc-sections", Off = "-Wl,--no-gc-sections" }
+		end,
+		identicalcodefolding = function(cfg)
+			if cfg.linker == "LLD" then -- GNU "ld" cannot fold.
+				return { Off = "-Wl,--icf=none", All = "-Wl,--icf=all", Safe = "-Wl,--icf=safe" }
+			elseif table.contains(os.getSystemTags(cfg.system), "darwin") then
+				return { Off = "-Wl,-no_deduplicate" } -- Apple "ld64" always folds safely, as it only folds weak definitions whose address is not taken.
+			end
+		end,
 		mapfile = {
 			On = function(cfg)
 				-- If a map file path has been explicitly provided, use that

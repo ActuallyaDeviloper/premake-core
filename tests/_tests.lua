@@ -67,6 +67,7 @@ return {
 	"base/test_validation.lua",
 
 	-- -- Toolset tests
+	"tools/test_deadcodestripping.lua",
 	"tools/test_dotnet.lua",
 	"tools/test_emcc.lua",
 	"tools/test_gcc.lua",
@@ -74,7 +75,9 @@ return {
 	"tools/test_msc.lua",
 	"tools/test_enablepch.lua",
 	"tools/test_generateassembly.lua",
+	"tools/test_identicalcodefolding.lua",
 	"tools/test_incrementallink.lua",
+	"tools/test_linksection.lua",
 	"tools/test_manifest.lua",
 	"tools/test_minimalrebuild.lua",
 	"tools/test_nodefaultlib.lua",
